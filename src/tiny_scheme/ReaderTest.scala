@@ -35,5 +35,6 @@ class ReaderTest extends FlatSpec with ShouldMatchers {
   "A Reader" should "read integer number" in {
     val reader = new Reader
     reader.read("1") should equal (1)
+    reader.read("2") should equal (2)
   }
  }
