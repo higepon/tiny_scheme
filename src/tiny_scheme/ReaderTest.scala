@@ -27,10 +27,13 @@ package tiny_scheme
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import org.scalatest.FlatSpec
+import org.scalatest.matchers.ShouldMatchers
 
-object ReaderTest {
-  def main(args: Array[String]) {
-    println(new Reader)
+class ReaderTest extends FlatSpec with ShouldMatchers {
+
+  "A Reader" should "read integer number" in {
+    val reader = new Reader
+    reader.read("1") should equal (1)
   }
-
-}
+ }

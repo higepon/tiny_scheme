@@ -29,5 +29,6 @@ package tiny_scheme
  */
 
 class Reader {
+  def read(s: String) = 1
 
 }
