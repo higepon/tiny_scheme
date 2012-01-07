@@ -1,5 +1,7 @@
 package tiny_scheme
 
+import util.parsing.combinator.JavaTokenParsers
+
 /**
  *   Copyright (c) 2012 Higepon(Taro Minowa) <higepon@users.sourceforge.jp>
  *
@@ -28,7 +30,10 @@ package tiny_scheme
  *
  */
 
-class Reader {
-  def read(s: String) = 1
-
+class Reader extends JavaTokenParsers {
+  def read(s: String) = parseAll(sexp, s) match {
+    case Success(r, _) => r.toInt
+    case x => throw(new Exception(x.toString))
+  }
+  def sexp = decimalNumber
 }
