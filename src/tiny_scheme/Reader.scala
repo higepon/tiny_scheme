@@ -30,6 +30,10 @@ import util.parsing.combinator.JavaTokenParsers
  *
  */
 
+class Null {
+
+}
+
 class Reader extends JavaTokenParsers {
   def read(s: String) = parseAll(sexp, s) match {
     case Success(r, _) => r.toInt

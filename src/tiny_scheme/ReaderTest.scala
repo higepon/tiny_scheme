@@ -37,4 +37,9 @@ class ReaderTest extends FlatSpec with ShouldMatchers {
     reader.read("1") should equal (1)
     reader.read("2") should equal (2)
   }
+  
+  "A Reader" should "read empty list" in {
+    val reader = new Reader
+    reader.read("()") should equal (new Null)
+  }
  }
