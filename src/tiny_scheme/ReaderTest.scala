@@ -52,4 +52,10 @@ class ReaderTest extends FlatSpec with ShouldMatchers {
     val reader = new Reader
     reader.read("(1 2 3)") should equal (Scheme.cons(new Number(1), Scheme.cons (new Number(2), Scheme.cons(new Number(3), new Null))))
   }
+
+  "A Reader" should "read string" in {
+    val reader = new Reader
+    reader.read("\"abc\"") should equal (new String("abc"))
+  }
+
 }
