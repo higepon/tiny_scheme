@@ -1,7 +1,5 @@
 package tiny_scheme
 
-import util.parsing.combinator.JavaTokenParsers
-
 /**
  *   Copyright (c) 2012 Higepon(Taro Minowa) <higepon@users.sourceforge.jp>
  *
@@ -30,31 +28,3 @@ import util.parsing.combinator.JavaTokenParsers
  *
  */
 
-abstract class Expr
-class Null extends Expr {
-  override def equals(other: Any): Boolean = this.getClass == other.getClass
-}
-
-class Cell(val car: Any, val cdr: Any) extends Expr {
-  override def equals(other: Any): Boolean = {
-    other.isInstanceOf[Cell] && car == other.asInstanceOf[Cell].car && cdr == other.asInstanceOf[Cell].cdr
-  }
-
-}
-
-class Reader extends JavaTokenParsers {
-  def read(s: String): Any = {
-    parseAll(sexp, s) match {
-      case x:NoSuccess => throw(new Exception(x.toString))
-      case p => println(p.get); p.get
-    }
-  }
-
-  def sexp: Parser[Any] = num | scheme_null | list
-  def num: Parser[Any] = """[0-9]+""".r ^^ { x => x.toInt }
-  def list: Parser[Any] = "(" ~> rep(sexp) <~ ")" ^^ { x => println(x); Scheme.toCell(x) }
-  def scheme_null: Parser[Null] = "()" ^^ {
-    s => new Null
-  }
-
-}
