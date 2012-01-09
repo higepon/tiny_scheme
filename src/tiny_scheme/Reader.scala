@@ -31,13 +31,21 @@ import util.parsing.combinator.JavaTokenParsers
  */
 
 class Null {
+  override def equals(other: Any): Boolean = this.getClass == other.getClass
 
 }
 
 class Reader extends JavaTokenParsers {
-  def read(s: String) = parseAll(sexp, s) match {
-    case Success(r, _) => r.toInt
-    case x => throw(new Exception(x.toString))
+  def read(s: String): Any = {
+    parseAll(sexp, s) match {
+      case x:NoSuccess => throw(new Exception(x.toString))
+      case p => p.get
+    }
   }
-  def sexp = decimalNumber
+
+  def sexp: Parser[Any] = scheme_null
+  def scheme_null: Parser[Null] = "()" ^^ {
+    s => new Null
+  }
+
 }
