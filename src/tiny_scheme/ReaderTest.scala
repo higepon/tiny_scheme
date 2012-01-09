@@ -46,6 +46,10 @@ class ReaderTest extends FlatSpec with ShouldMatchers {
   "A Reader" should "read one element list" in {
     val reader = new Reader
     reader.read("(1)") should equal (Scheme.cons(1, new Null))
-    
   }
- }
+
+  "A Reader" should "read multiple element list" in {
+    val reader = new Reader
+    reader.read("(1 2 3)") should equal (Scheme.cons(1, Scheme.cons (2, Scheme.cons(3, new Null))))
+  }
+}
