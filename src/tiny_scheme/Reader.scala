@@ -46,18 +46,31 @@ class Number(val value: Int) extends Expr {
     other.isInstanceOf[Number] && value == other.asInstanceOf[Number].value
   }
 
-  override def toString: String = "[" + value.toString + "]"
+  override def toString: java.lang.String = "[" + value.toString + "]"
 }
+
+class String(val value: java.lang.String) extends Expr {
+  override def equals(other: Any): Boolean = {
+    other.isInstanceOf[tiny_scheme.String] && value == other.asInstanceOf[tiny_scheme.String].value
+  }
+
+  override def toString: java.lang.String = "[" + value + "]"
+  
+}
+
 class Reader extends JavaTokenParsers {
-  def read(s: String): Any = {
+  def read(s: java.lang.String): Any = {
     parseAll(sexp, s) match {
       case x:NoSuccess => throw(new Exception(x.toString))
       case p => println(p.get); p.get
     }
   }
 
-  def sexp: Parser[Any] = num | scheme_null | list
-  def num: Parser[Any] = """[0-9]+""".r ^^ { x => new Number(x.toInt) }
+  def sexp: Parser[Any] = number | scheme_null | list | string
+  def number: Parser[Any] = """[0-9]+""".r ^^ { x => new Number(x.toInt) }
+  def string: Parser[Any] = """\"([a-zA-Z0-9]*)\"""".r ^^ {
+    x => new tiny_scheme.String(x.substring(1, x.length() - 1))
+  }
   def list: Parser[Any] = "(" ~> rep(sexp) <~ ")" ^^ { x => println(x); Scheme.toCell(x) }
   def scheme_null: Parser[Null] = "()" ^^ {
     s => new Null
