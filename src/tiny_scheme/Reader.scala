@@ -39,9 +39,15 @@ class Cell(val car: Any, val cdr: Any) extends Expr {
   override def equals(other: Any): Boolean = {
     other.isInstanceOf[Cell] && car == other.asInstanceOf[Cell].car && cdr == other.asInstanceOf[Cell].cdr
   }
-
 }
 
+class Number(val value: Int) extends Expr {
+  override def equals(other: Any): Boolean = {
+    other.isInstanceOf[Number] && value == other.asInstanceOf[Number].value
+  }
+
+  override def toString: String = "[" + value.toString + "]"
+}
 class Reader extends JavaTokenParsers {
   def read(s: String): Any = {
     parseAll(sexp, s) match {
@@ -51,7 +57,7 @@ class Reader extends JavaTokenParsers {
   }
 
   def sexp: Parser[Any] = num | scheme_null | list
-  def num: Parser[Any] = """[0-9]+""".r ^^ { x => x.toInt }
+  def num: Parser[Any] = """[0-9]+""".r ^^ { x => new Number(x.toInt) }
   def list: Parser[Any] = "(" ~> rep(sexp) <~ ")" ^^ { x => println(x); Scheme.toCell(x) }
   def scheme_null: Parser[Null] = "()" ^^ {
     s => new Null
