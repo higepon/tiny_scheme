@@ -31,10 +31,9 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 class EvalTest extends FlatSpec with ShouldMatchers {
-  /*
   "A (+ 1 2) Expression" should "be evaluated as 3" in {
-    (new Reader).read("(+ 1 2)").eval should equal (new Number(3))
+    Scheme.eval((new Reader).read("(+ 1 2)")) should equal (new Number(3))
 
   }
-  */
+
 }

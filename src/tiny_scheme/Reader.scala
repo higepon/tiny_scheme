@@ -36,50 +36,36 @@ class Null extends Expr {
 }
 
 case class Cons(car: Any, cdr: Any) extends Expr {
-  override def equals(other: Any): Boolean = {
-    other.isInstanceOf[Cons] && car == other.asInstanceOf[Cons].car && cdr == other.asInstanceOf[Cons].cdr
-  }
 }
 
 case class Number(value: Int) extends Expr {
-  override def equals(other: Any): Boolean = {
-    other.isInstanceOf[Number] && value == other.asInstanceOf[Number].value
-  }
-
   override def toString: java.lang.String = "[" + value.toString + "]"
 }
 
 case class String(value: java.lang.String) extends Expr {
-  override def equals(other: Any): Boolean = {
-    other.isInstanceOf[tiny_scheme.String] && value == other.asInstanceOf[tiny_scheme.String].value
-  }
-
   override def toString: java.lang.String = "[" + value + "]"
 }
 
 case class Symbol(value: java.lang.String) extends Expr {
-  override def equals(other: Any): Boolean = {
-    other.isInstanceOf[tiny_scheme.Symbol] && value == other.asInstanceOf[tiny_scheme.Symbol].value
-  }
   override def toString: java.lang.String = "[" + value + "]"
 }
 
 class Reader extends JavaTokenParsers {
-  def read(s: java.lang.String): Any = {
+  def read(s: java.lang.String): Expr = {
     parseAll(sexp, s) match {
       case x:NoSuccess => throw(new Exception(x.toString))
-      case p => println(p.get); p.get
+      case p => p.get
     }
   }
 
-  def sexp: Parser[Any] = number | scheme_null | list | string | symbol
-  def number: Parser[Any] = """[0-9]+""".r ^^ { x => Number(x.toInt) }
-  def string: Parser[Any] = """\"([a-zA-Z0-9]*)\"""".r ^^ {
+  lazy val sexp: Parser[Expr] = number | scheme_null | list | string | symbol
+  lazy val number: Parser[Expr] = """[0-9]+""".r ^^ { x => Number(x.toInt) }
+  lazy val string: Parser[Expr] = """\"([a-zA-Z0-9]*)\"""".r ^^ {
     x => tiny_scheme.String(x.substring(1, x.length() - 1))
   }
-  def symbol: Parser[Any] = """([a-zA-Z][a-zA-Z0-9]*)""".r ^^ { x => Symbol(x) }
-  def list: Parser[Any] = "(" ~> rep(sexp) <~ ")" ^^ { x => println(x); Scheme.toCell(x) }
-  def scheme_null: Parser[Null] = "()" ^^ {
+  lazy val symbol: Parser[Expr] = """([a-zA-Z+][a-zA-Z0-9]*)""".r ^^ { x => Symbol(x) }
+  lazy val list: Parser[Expr] = "(" ~> rep(sexp) <~ ")" ^^ { x => Scheme.toCell(x) }
+  lazy val scheme_null: Parser[Null] = "()" ^^ {
     s => new Null
   }
 

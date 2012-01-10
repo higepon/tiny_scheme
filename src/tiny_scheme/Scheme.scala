@@ -35,11 +35,24 @@ object Scheme {
       case head::tail => Cons(head, toCell(tail))
     }
   }
-  /*
+  
+  def sum(nums: Expr): Number = {
+    nums match {
+      case _:Null => Number(0)
+      case Cons(car, cdr:Expr) =>
+        car match {
+          case Number(n) => Number(n + sum(cdr).value)
+          case _ => throw(new Exception("not a number on +"))
+        }
+    }
+  }
+  
   def eval(expr: Expr): Expr = {
     expr match {
-      case Cons(Symbol())
+      case Cons(Symbol("+"), other:Expr) => {
+        sum(other)
+      }
     } 
   }
-  */
+
 }                                                  
