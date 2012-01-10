@@ -34,8 +34,8 @@ class ReaderTest extends FlatSpec with ShouldMatchers {
 
   "A Reader" should "read integer number" in {
     val reader = new Reader
-    reader.read("1") should equal (new Number(1))
-    reader.read("2") should equal (new Number(2))
+    reader.read("1") should equal (Number(1))
+    reader.read("2") should equal (Number(2))
   }
   
   "A Reader" should "read empty list" in {
@@ -45,21 +45,21 @@ class ReaderTest extends FlatSpec with ShouldMatchers {
   
   "A Reader" should "read one element list" in {
     val reader = new Reader
-    reader.read("(1)") should equal (Scheme.cons(new Number(1), new Null))
+    reader.read("(1)") should equal (Scheme.cons(Number(1), new Null))
   }
 
   "A Reader" should "read multiple element list" in {
     val reader = new Reader
-    reader.read("(1 2 3)") should equal (Scheme.cons(new Number(1), Scheme.cons (new Number(2), Scheme.cons(new Number(3), new Null))))
+    reader.read("(1 2 3)") should equal (Scheme.cons(Number(1), Scheme.cons (Number(2), Scheme.cons(Number(3), new Null))))
   }
 
   "A Reader" should "read string" in {
     val reader = new Reader
-    reader.read("\"abc\"") should equal (new tiny_scheme.String("abc"))
+    reader.read("\"abc\"") should equal (tiny_scheme.String("abc"))
   }
 
   "A Reader" should "read symbol" in {
     val reader = new Reader
-    reader.read("abc") should equal (new tiny_scheme.Symbol("abc"))
+    reader.read("abc") should equal (tiny_scheme.Symbol("abc"))
   }
 }

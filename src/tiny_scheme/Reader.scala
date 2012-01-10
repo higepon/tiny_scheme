@@ -41,7 +41,7 @@ case class Cell(car: Any, cdr: Any) extends Expr {
   }
 }
 
-class Number(val value: Int) extends Expr {
+case class Number(value: Int) extends Expr {
   override def equals(other: Any): Boolean = {
     other.isInstanceOf[Number] && value == other.asInstanceOf[Number].value
   }
@@ -49,7 +49,7 @@ class Number(val value: Int) extends Expr {
   override def toString: java.lang.String = "[" + value.toString + "]"
 }
 
-class String(val value: java.lang.String) extends Expr {
+case class String(value: java.lang.String) extends Expr {
   override def equals(other: Any): Boolean = {
     other.isInstanceOf[tiny_scheme.String] && value == other.asInstanceOf[tiny_scheme.String].value
   }
@@ -57,13 +57,12 @@ class String(val value: java.lang.String) extends Expr {
   override def toString: java.lang.String = "[" + value + "]"
 }
 
-class Symbol(val value: java.lang.String) extends Expr {
+case class Symbol(value: java.lang.String) extends Expr {
   override def equals(other: Any): Boolean = {
     other.isInstanceOf[tiny_scheme.Symbol] && value == other.asInstanceOf[tiny_scheme.Symbol].value
   }
   override def toString: java.lang.String = "[" + value + "]"
 }
-
 
 class Reader extends JavaTokenParsers {
   def read(s: java.lang.String): Any = {
@@ -74,11 +73,11 @@ class Reader extends JavaTokenParsers {
   }
 
   def sexp: Parser[Any] = number | scheme_null | list | string | symbol
-  def number: Parser[Any] = """[0-9]+""".r ^^ { x => new Number(x.toInt) }
+  def number: Parser[Any] = """[0-9]+""".r ^^ { x => Number(x.toInt) }
   def string: Parser[Any] = """\"([a-zA-Z0-9]*)\"""".r ^^ {
-    x => new tiny_scheme.String(x.substring(1, x.length() - 1))
+    x => tiny_scheme.String(x.substring(1, x.length() - 1))
   }
-  def symbol: Parser[Any] = """([a-zA-Z][a-zA-Z0-9]*)""".r ^^ { x => new Symbol(x) }
+  def symbol: Parser[Any] = """([a-zA-Z][a-zA-Z0-9]*)""".r ^^ { x => Symbol(x) }
   def list: Parser[Any] = "(" ~> rep(sexp) <~ ")" ^^ { x => println(x); Scheme.toCell(x) }
   def scheme_null: Parser[Null] = "()" ^^ {
     s => new Null

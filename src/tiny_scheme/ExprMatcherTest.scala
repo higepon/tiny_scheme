@@ -36,5 +36,11 @@ class ExprMatcherTest extends FlatSpec with ShouldMatchers {
       case Cell(x, y) => (x should equal (1))
     }    
   }
+
+  "Cell" should "be match as case class using ::" in {
+    new Cell(1, 2) match {
+      case x Cell y => (x should equal (1))
+    }
+  }
 }
 
