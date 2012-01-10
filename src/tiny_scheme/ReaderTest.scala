@@ -58,4 +58,8 @@ class ReaderTest extends FlatSpec with ShouldMatchers {
     reader.read("\"abc\"") should equal (new tiny_scheme.String("abc"))
   }
 
+  "A Reader" should "read symbol" in {
+    val reader = new Reader
+    reader.read("abc") should equal (new tiny_scheme.Symbol("abc"))
+  }
 }

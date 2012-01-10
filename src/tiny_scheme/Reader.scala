@@ -55,8 +55,15 @@ class String(val value: java.lang.String) extends Expr {
   }
 
   override def toString: java.lang.String = "[" + value + "]"
-  
 }
+
+class Symbol(val value: java.lang.String) extends Expr {
+  override def equals(other: Any): Boolean = {
+    other.isInstanceOf[tiny_scheme.Symbol] && value == other.asInstanceOf[tiny_scheme.Symbol].value
+  }
+  override def toString: java.lang.String = "[" + value + "]"
+}
+
 
 class Reader extends JavaTokenParsers {
   def read(s: java.lang.String): Any = {
@@ -66,11 +73,12 @@ class Reader extends JavaTokenParsers {
     }
   }
 
-  def sexp: Parser[Any] = number | scheme_null | list | string
+  def sexp: Parser[Any] = number | scheme_null | list | string | symbol
   def number: Parser[Any] = """[0-9]+""".r ^^ { x => new Number(x.toInt) }
   def string: Parser[Any] = """\"([a-zA-Z0-9]*)\"""".r ^^ {
     x => new tiny_scheme.String(x.substring(1, x.length() - 1))
   }
+  def symbol: Parser[Any] = """([a-zA-Z][a-zA-Z0-9]*)""".r ^^ { x => new Symbol(x) }
   def list: Parser[Any] = "(" ~> rep(sexp) <~ ")" ^^ { x => println(x); Scheme.toCell(x) }
   def scheme_null: Parser[Null] = "()" ^^ {
     s => new Null
