@@ -35,7 +35,7 @@ class Null extends Expr {
   override def equals(other: Any): Boolean = this.getClass == other.getClass
 }
 
-class Cell(val car: Any, val cdr: Any) extends Expr {
+case class Cell(car: Any, cdr: Any) extends Expr {
   override def equals(other: Any): Boolean = {
     other.isInstanceOf[Cell] && car == other.asInstanceOf[Cell].car && cdr == other.asInstanceOf[Cell].cdr
   }

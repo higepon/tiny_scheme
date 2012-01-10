@@ -27,20 +27,14 @@ package tiny_scheme
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+import org.scalatest.FlatSpec
+import org.scalatest.matchers.ShouldMatchers
 
-object Scheme {
-  def cons(a: Any, b: Any) = new Cell(a, b)
-  def toCell(list: List[Any]): Expr = {
-    list match {
-      case List() => new Null
-      case head::tail => Scheme.cons(head, toCell(tail))
-    }
-  }
+class EvalTest extends FlatSpec with ShouldMatchers {
   /*
-  def eval(expr: Expr): Expr = {
-    expr match {
-      case Cell(Symbol())
-    } 
+  "A (+ 1 2) Expression" should "be evaluated as 3" in {
+    (new Reader).read("(+ 1 2)").eval should equal (new Number(3))
+
   }
   */
-}                                                  
+}
