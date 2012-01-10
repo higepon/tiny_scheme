@@ -29,17 +29,16 @@ package tiny_scheme
  */
 
 object Scheme {
-  def cons(a: Any, b: Any) = new Cell(a, b)
   def toCell(list: List[Any]): Expr = {
     list match {
       case List() => new Null
-      case head::tail => Scheme.cons(head, toCell(tail))
+      case head::tail => Cons(head, toCell(tail))
     }
   }
   /*
   def eval(expr: Expr): Expr = {
     expr match {
-      case Cell(Symbol())
+      case Cons(Symbol())
     } 
   }
   */

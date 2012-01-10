@@ -31,15 +31,15 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 class ExprMatcherTest extends FlatSpec with ShouldMatchers {
-  "Cell" should "be match as case class" in {
-    new Cell(1, 2) match {
-      case Cell(x, y) => (x should equal (1))
+  "Cons" should "be match as case class" in {
+    new Cons(1, 2) match {
+      case Cons(x, y) => (x should equal (1))
     }    
   }
 
-  "Cell" should "be match as case class using ::" in {
-    new Cell(1, 2) match {
-      case x Cell y => (x should equal (1))
+  "Cons" should "be match as case class using ::" in {
+    new Cons(1, 2) match {
+      case x Cons y => (x should equal (1))
     }
   }
 }
