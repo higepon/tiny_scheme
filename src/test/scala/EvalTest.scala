@@ -29,11 +29,11 @@ package test.scala
  */
 
 import org.scalatest.FunSuite
-import tiny_scheme.{Reader, Scheme, Number}
+import tiny_scheme.{Reader, Expr, Number}
 
 class EvalTestSuite extends FunSuite {
   
   test("addition") {
-    assert(Scheme.eval((new Reader).read("(+ 1 2)")) === new Number(3))
+    assert(Expr.eval((new Reader).read("(+ 1 2)")) === new Number(3))
   }
 }

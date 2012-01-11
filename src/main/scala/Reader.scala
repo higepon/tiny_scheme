@@ -32,6 +32,21 @@ import util.parsing.combinator.JavaTokenParsers
 
 abstract class Expr;
 
+class Null extends Expr {
+  override def equals(other: Any): Boolean = isInstanceOf[Null]
+}
+
+case class Cons(car: Expr, cdr: Expr) extends Expr {
+}
+
+case class Number(value: Int) extends Expr {
+  override def toString: java.lang.String = "[" + value.toString + "]"
+}
+
+object Number {
+  implicit def toNumber(i: Int) = new Number(i)
+}
+
 object Expr {
   implicit def listToCons(list: List[Expr]): Expr = {
     list match {
@@ -39,17 +54,27 @@ object Expr {
       case head::tail => Cons(head, listToCons(tail))
     }
   }
-}
+  implicit def toNumber(i: Int):Expr = new Number(i)
 
-class Null extends Expr {
-  override def equals(other: Any): Boolean = isInstanceOf[Null]
-}
+  private def sum(nums: Expr): Number = {
+    nums match {
+      case _:Null => 0
+      case Cons(car, cdr:Expr) =>
+        car match {
+          case Number(n) => n + sum(cdr).value
+          case _ => throw(new Exception("not a number on +"))
+        }
+    }
+  }
 
-case class Cons(car: Any, cdr: Any) extends Expr {
-}
-
-case class Number(value: Int) extends Expr {
-  override def toString: java.lang.String = "[" + value.toString + "]"
+  def eval(expr: Expr): Expr = {
+    expr match {
+      case Cons(Symbol("+"), other:Expr
+      ) => {
+        sum(other)
+      }
+    }
+  }
 }
 
 case class String(value: java.lang.String) extends Expr {

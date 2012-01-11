@@ -29,12 +29,12 @@ package test.scala
  */
 
 import org.scalatest.FunSuite
-import tiny_scheme.Cons
+import tiny_scheme.{Cons, Number}
 
 class ExprMatcherTestSuite extends FunSuite {
   test("Cons matches as case class") {
     new Cons(1, 2) match {
-      case Cons(x, y) => assert(x === 1)
+      case Cons(x, y) => assert(x === new Number(1))
     }
   }
 }
