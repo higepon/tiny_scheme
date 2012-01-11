@@ -28,13 +28,12 @@ package test.scala
  *
  */
 
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.FunSuite
 import tiny_scheme.{Reader, Scheme, Number}
 
-class EvalTest extends FlatSpec with ShouldMatchers {
-  "A (+ 1 2) Expression" should "be evaluated as 3" in {
-    Scheme.eval((new Reader).read("(+ 1 2)")) should equal (new Number(3))
+class EvalTestSuite extends FunSuite {
+  
+  test("addition") {
+    assert(Scheme.eval((new Reader).read("(+ 1 2)")) === new Number(3))
   }
-
 }

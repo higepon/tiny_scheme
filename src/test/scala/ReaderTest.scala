@@ -28,40 +28,39 @@ package test.scala
  *
  */
 
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.FunSuite
 import tiny_scheme.{Cons, Number, Reader, Null}
 
-class ReaderTest extends FlatSpec with ShouldMatchers {
+class ReaderTestSuite extends FunSuite {
 
-  "A Reader" should "read integer number" in {
+  test("A Reader read integer number") {
     val reader = new Reader
-    reader.read("1") should equal (Number(1))
-    reader.read("2") should equal (Number(2))
+    assert(reader.read("1") === Number(1))
+    assert(reader.read("2") === Number(2))
   }
 
-  "A Reader" should "read empty list" in {
+  test("A Reader read empty list") {
     val reader = new Reader
-    reader.read("()") should equal (new Null)
+    assert(reader.read("()") === new Null)
   }
 
-  "A Reader" should "read one element list" in {
+  test("A Reader read one element list") {
     val reader = new Reader
-    reader.read("(1)") should equal (Cons(Number(1), new Null))
+    assert(reader.read("(1)") === Cons(Number(1), new Null))
   }
 
-  "A Reader" should "read multiple element list" in {
+  test("A Reader read multiple element list") {
     val reader = new Reader
-    reader.read("(1 2 3)") should equal (Cons(Number(1), Cons(Number(2), Cons(Number(3), new Null))))
+    assert(reader.read("(1 2 3)") === Cons(Number(1), Cons(Number(2), Cons(Number(3), new Null))))
   }
 
-  "A Reader" should "read string" in {
+  test("A Reader read string") {
     val reader = new Reader
-    reader.read("\"abc\"") should equal (tiny_scheme.String("abc"))
+    assert(reader.read("\"abc\"") === tiny_scheme.String("abc"))
   }
 
-  "A Reader" should "read symbol" in {
+  test("A Reader read symbol") {
     val reader = new Reader
-    reader.read("abc") should equal (tiny_scheme.Symbol("abc"))
+    assert(reader.read("abc") === tiny_scheme.Symbol("abc"))
   }
 }

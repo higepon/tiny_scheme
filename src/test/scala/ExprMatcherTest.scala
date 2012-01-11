@@ -28,20 +28,13 @@ package test.scala
  *
  */
 
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.FunSuite
 import tiny_scheme.Cons
 
-class ExprMatcherTest extends FlatSpec with ShouldMatchers {
-  "Cons" should "be match as case class" in {
+class ExprMatcherTestSuite extends FunSuite {
+  test("Cons matches as case class") {
     new Cons(1, 2) match {
-      case Cons(x, y) => (x should equal (1))
-    }
-  }
-
-  "Cons" should "be match as case class using ::" in {
-    new Cons(1, 2) match {
-      case x Cons y => (x should equal (1))
+      case Cons(x, y) => assert(x === 1)
     }
   }
 }
