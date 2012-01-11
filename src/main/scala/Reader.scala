@@ -1,5 +1,7 @@
 package tiny_scheme
 
+import util.parsing.combinator.JavaTokenParsers
+
 /**
  *   Copyright (c) 2012 Higepon(Taro Minowa) <higepon@users.sourceforge.jp>
  *
@@ -27,20 +29,45 @@ package tiny_scheme
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
 
-class ExprMatcherTest extends FlatSpec with ShouldMatchers {
-  "Cons" should "be match as case class" in {
-    new Cons(1, 2) match {
-      case Cons(x, y) => (x should equal (1))
-    }    
-  }
+abstract class Expr
 
-  "Cons" should "be match as case class using ::" in {
-    new Cons(1, 2) match {
-      case x Cons y => (x should equal (1))
-    }
-  }
+class Null extends Expr {
+  override def equals(other: Any): Boolean = isInstanceOf[Null]
 }
 
+case class Cons(car: Any, cdr: Any) extends Expr {
+}
+
+case class Number(value: Int) extends Expr {
+  override def toString: java.lang.String = "[" + value.toString + "]"
+}
+
+case class String(value: java.lang.String) extends Expr {
+  override def toString: java.lang.String = "[" + value + "]"
+}
+
+case class Symbol(value: java.lang.String) extends Expr {
+  override def toString: java.lang.String = "[" + value + "]"
+}
+
+class Reader extends JavaTokenParsers {
+  def read(s: java.lang.String): Expr = {
+    parseAll(sexp, s) match {
+      case x:NoSuccess => throw(new Exception(x.toString))
+      case p => p.get
+    }
+  }
+
+  lazy val sexp: Parser[Expr] = number | scheme_null | list | string | symbol
+  lazy val number: Parser[Expr] = """[0-9]+""".r ^^ { x => Number(x.toInt) }
+  lazy val string: Parser[Expr] = """\"([a-zA-Z0-9]*)\"""".r ^^ {
+    x => tiny_scheme.String(x.substring(1, x.length() - 1))
+  }
+  lazy val symbol: Parser[Expr] = """([a-zA-Z+][a-zA-Z0-9]*)""".r ^^ { x => Symbol(x) }
+  lazy val list: Parser[Expr] = "(" ~> rep(sexp) <~ ")" ^^ { x => Scheme.toCell(x) }
+  lazy val scheme_null: Parser[Null] = "()" ^^ {
+    s => new Null
+  }
+
+}

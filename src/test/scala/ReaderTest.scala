@@ -1,4 +1,4 @@
-package tiny_scheme
+package test.scala
 
 /**
  *   Copyright (c) 2012 Higepon(Taro Minowa) <higepon@users.sourceforge.jp>
@@ -27,8 +27,10 @@ package tiny_scheme
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
+import tiny_scheme.{Cons, Number, Reader, Null}
 
 class ReaderTest extends FlatSpec with ShouldMatchers {
 
@@ -37,12 +39,12 @@ class ReaderTest extends FlatSpec with ShouldMatchers {
     reader.read("1") should equal (Number(1))
     reader.read("2") should equal (Number(2))
   }
-  
+
   "A Reader" should "read empty list" in {
     val reader = new Reader
     reader.read("()") should equal (new Null)
   }
-  
+
   "A Reader" should "read one element list" in {
     val reader = new Reader
     reader.read("(1)") should equal (Cons(Number(1), new Null))

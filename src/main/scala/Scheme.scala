@@ -27,13 +27,33 @@ package tiny_scheme
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
 
-class EvalTest extends FlatSpec with ShouldMatchers {
-  "A (+ 1 2) Expression" should "be evaluated as 3" in {
-    Scheme.eval((new Reader).read("(+ 1 2)")) should equal (new Number(3))
+object Scheme {
+  def toCell(list: List[Any]): Expr = {
+    list match {
+      case List() => new Null
+      case head::tail => Cons(head, toCell(tail))
+    }
+  }
 
+  def sum(nums: Expr): Number = {
+    nums match {
+      case _:Null => Number(0)
+      case Cons(car, cdr:Expr) =>
+        car match {
+          case Number(n) => Number(n + sum(cdr).value)
+          case _ => throw(new Exception("not a number on +"))
+        }
+    }
+  }
+
+  def eval(expr: Expr): Expr = {
+    expr match {
+      case Cons(Symbol("+"), other:Expr
+      ) => {
+        sum(other)
+      }
+    }
   }
 
 }
