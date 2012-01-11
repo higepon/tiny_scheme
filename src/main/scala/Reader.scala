@@ -36,8 +36,7 @@ class Null extends Expr {
   override def equals(other: Any): Boolean = isInstanceOf[Null]
 }
 
-case class Cons(car: Expr, cdr: Expr) extends Expr {
-}
+case class Cons(car: Expr, cdr: Expr) extends Expr
 
 case class Number(value: Int) extends Expr {
   override def toString: java.lang.String = "[" + value.toString + "]"
