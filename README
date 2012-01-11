@@ -1,1 +1,2 @@
-This file was created by IntelliJ IDEA 11.0.1 for binding GitHub repository
+tiny scheme for scala practice.
+For now it has only a sexp reader.
