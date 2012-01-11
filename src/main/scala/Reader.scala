@@ -30,7 +30,16 @@ import util.parsing.combinator.JavaTokenParsers
  *
  */
 
-abstract class Expr
+abstract class Expr;
+
+object Expr {
+  implicit def listToCons(list: List[Expr]): Expr = {
+    list match {
+      case List() => new Null
+      case head::tail => Cons(head, listToCons(tail))
+    }
+  }
+}
 
 class Null extends Expr {
   override def equals(other: Any): Boolean = isInstanceOf[Null]
@@ -65,9 +74,8 @@ class Reader extends JavaTokenParsers {
     x => tiny_scheme.String(x.substring(1, x.length() - 1))
   }
   lazy val symbol: Parser[Expr] = """([a-zA-Z+][a-zA-Z0-9]*)""".r ^^ { x => Symbol(x) }
-  lazy val list: Parser[Expr] = "(" ~> rep(sexp) <~ ")" ^^ { x => Scheme.toCell(x) }
+  lazy val list: Parser[Expr] = "(" ~> rep(sexp) <~ ")" ^^ { x => x }
   lazy val scheme_null: Parser[Null] = "()" ^^ {
     s => new Null
   }
-
 }

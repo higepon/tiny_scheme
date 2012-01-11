@@ -29,12 +29,6 @@ package tiny_scheme
  */
 
 object Scheme {
-  def toCell(list: List[Any]): Expr = {
-    list match {
-      case List() => new Null
-      case head::tail => Cons(head, toCell(tail))
-    }
-  }
 
   def sum(nums: Expr): Number = {
     nums match {
