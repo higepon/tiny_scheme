@@ -29,7 +29,7 @@ package test.scala
  */
 
 import org.scalatest.FunSuite
-import tiny_scheme.{Cons, Number, Reader, Null}
+import tiny_scheme.{Cons, Number, Reader, Nil}
 
 class ReaderTestSuite extends FunSuite {
 
@@ -41,17 +41,17 @@ class ReaderTestSuite extends FunSuite {
 
   test("A Reader read empty list") {
     val reader = new Reader
-    assert(reader.read("()") === new Null)
+    assert(reader.read("()") === Nil)
   }
 
   test("A Reader read one element list") {
     val reader = new Reader
-    assert(reader.read("(1)") === Cons(1, new Null))
+    assert(reader.read("(1)") === Cons(1, Nil))
   }
 
   test("A Reader read multiple element list") {
     val reader = new Reader
-    assert(reader.read("(1 2 3)") === Cons(1, Cons(2, Cons(3, new Null))))
+    assert(reader.read("(1 2 3)") === Cons(1, Cons(2, Cons(3, Nil))))
   }
 
   test("A Reader read string") {

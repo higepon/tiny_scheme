@@ -32,9 +32,7 @@ import util.parsing.combinator.JavaTokenParsers
 
 abstract class Expr;
 
-class Null extends Expr {
-  override def equals(other: Any): Boolean = isInstanceOf[Null]
-}
+case object Nil extends Expr
 
 case class Cons(car: Expr, cdr: Expr) extends Expr
 
@@ -49,7 +47,7 @@ object Number {
 object Expr {
   implicit def listToCons(list: List[Expr]): Expr = {
     list match {
-      case List() => new Null
+      case List() => Nil
       case head::tail => Cons(head, listToCons(tail))
     }
   }
@@ -57,7 +55,7 @@ object Expr {
 
   private def sum(nums: Expr): Number = {
     nums match {
-      case _:Null => 0
+      case Nil => 0
       case Cons(car, cdr:Expr) =>
         car match {
           case Number(n) => n + sum(cdr).value
@@ -92,14 +90,14 @@ class Reader extends JavaTokenParsers {
     }
   }
 
-  lazy val sexp: Parser[Expr] = number | scheme_null | list | string | symbol
+  lazy val sexp: Parser[Expr] = number | nil | list | string | symbol
   lazy val number: Parser[Expr] = """[0-9]+""".r ^^ { x => Number(x.toInt) }
   lazy val string: Parser[Expr] = """\"([a-zA-Z0-9]*)\"""".r ^^ {
     x => tiny_scheme.String(x.substring(1, x.length() - 1))
   }
   lazy val symbol: Parser[Expr] = """([a-zA-Z+][a-zA-Z0-9]*)""".r ^^ { x => Symbol(x) }
   lazy val list: Parser[Expr] = "(" ~> rep(sexp) <~ ")" ^^ { x => x }
-  lazy val scheme_null: Parser[Null] = "()" ^^ {
-    s => new Null
+  lazy val nil: Parser[Expr] = "()" ^^ {
+    s => Nil
   }
 }
