@@ -39,5 +39,7 @@ class EvalTestSuite extends FunSuite {
   
   test("self evaluating objects") {
     assert(Expr.eval(3) === new Number(3))
+    assert(Expr.eval(new tiny_scheme.String("hello")) === new tiny_scheme.String("hello"))
+    assert(Expr.eval(new tiny_scheme.Symbol("hello")) === new tiny_scheme.Symbol("hello"))
   }
 }
