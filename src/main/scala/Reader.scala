@@ -67,7 +67,9 @@ object Expr {
   def eval(expr: Expr): Expr = {
     expr match {
       case Cons(Symbol("+"), other:Expr) => { sum(other) }
-      case x => {x}
+      case x:String => {x}
+      case x:Symbol => {x}
+      case x:Number => {x}
     }
   }
 }
