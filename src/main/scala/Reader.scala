@@ -89,7 +89,8 @@ class Reader extends JavaTokenParsers {
     }
   }
 
-  lazy val sexp: Parser[Expr] = number | nil | list | string | symbol
+  lazy val sexp: Parser[Expr] = number | nil | list | string | symbol | quote
+  lazy val quote: Parser[Expr] = "'" ~> sexp ^^ { x => Cons(Symbol("quote"), x) }
   lazy val number: Parser[Expr] = """[0-9]+""".r ^^ { x => Number(x.toInt) }
   lazy val string: Parser[Expr] = """\"([a-zA-Z0-9]*)\"""".r ^^ {
     x => tiny_scheme.String(x.substring(1, x.length() - 1))
