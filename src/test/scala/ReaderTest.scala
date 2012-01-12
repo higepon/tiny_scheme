@@ -66,6 +66,6 @@ class ReaderTestSuite extends FunSuite {
   
   test("A reader read quote syntax") {
     val reader = new Reader
-    assert(reader.read("'(abc)") === Cons(tiny_scheme.Symbol("abc"), Nil))
+    assert(reader.read("'(abc)") === Cons(tiny_scheme.Symbol("quote"), Cons(tiny_scheme.Symbol("abc"), Nil)))
   }
 }
