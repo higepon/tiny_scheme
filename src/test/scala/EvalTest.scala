@@ -36,4 +36,8 @@ class EvalTestSuite extends FunSuite {
   test("addition") {
     assert(Expr.eval((new Reader).read("(+ 1 2)")) === new Number(3))
   }
+  
+  test("self evaluating objects") {
+    assert(Expr.eval(3) === new Number(3))
+  }
 }
