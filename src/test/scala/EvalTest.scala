@@ -44,6 +44,6 @@ class EvalTestSuite extends FunSuite {
   }
   
   test("quote syntax") {
-    assert(Expr.eval((new Reader).read("'()")) === Nil)
+    assert(Expr.eval((new Reader).read("'()")) === tiny_scheme.Nil)
   }
 }

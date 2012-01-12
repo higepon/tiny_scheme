@@ -68,6 +68,7 @@ object Expr {
   def eval(expr: Expr): Expr = {
     expr match {
       case Cons(Symbol("+"), other:Expr) => { sum(other) }
+      case Cons(Symbol("quote"), other:Expr) => { other }
       case x:SelfEvaluating => {x}
     }
   }
@@ -97,7 +98,5 @@ class Reader extends JavaTokenParsers {
   }
   lazy val symbol: Parser[Expr] = """([a-zA-Z+][a-zA-Z0-9]*)""".r ^^ { x => Symbol(x) }
   lazy val list: Parser[Expr] = "(" ~> rep(sexp) <~ ")" ^^ { x => x }
-  lazy val nil: Parser[Expr] = "()" ^^ {
-    s => Nil
-  }
+  lazy val nil: Parser[Expr] = "()" ^^ { x => Nil }
 }
