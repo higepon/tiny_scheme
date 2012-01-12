@@ -33,10 +33,11 @@ import util.parsing.combinator.JavaTokenParsers
 abstract class Expr;
 
 case object Nil extends Expr
+trait SelfEvaluating
 
 case class Cons(car: Expr, cdr: Expr) extends Expr
 
-case class Number(value: Int) extends Expr {
+case class Number(value: Int) extends Expr with SelfEvaluating {
   override def toString: java.lang.String = "[" + value.toString + "]"
 }
 
@@ -67,18 +68,16 @@ object Expr {
   def eval(expr: Expr): Expr = {
     expr match {
       case Cons(Symbol("+"), other:Expr) => { sum(other) }
-      case x:String => {x}
-      case x:Symbol => {x}
-      case x:Number => {x}
+      case x:SelfEvaluating => {x}
     }
   }
 }
 
-case class String(value: java.lang.String) extends Expr {
+case class String(value: java.lang.String) extends Expr with SelfEvaluating {
   override def toString: java.lang.String = "[" + value + "]"
 }
 
-case class Symbol(value: java.lang.String) extends Expr {
+case class Symbol(value: java.lang.String) extends Expr with SelfEvaluating {
   override def toString: java.lang.String = "[" + value + "]"
 }
 
