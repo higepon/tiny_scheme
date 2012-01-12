@@ -42,4 +42,8 @@ class EvalTestSuite extends FunSuite {
     assert(Expr.eval(new tiny_scheme.String("hello")) === new tiny_scheme.String("hello"))
     assert(Expr.eval(new tiny_scheme.Symbol("hello")) === new tiny_scheme.Symbol("hello"))
   }
+  
+  test("quote syntax") {
+    assert(Expr.eval((new Reader).read("'()")) === Nil)
+  }
 }
